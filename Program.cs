@@ -1,5 +1,8 @@
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using PoolGameAPI.Controllers;
+using System.Text;
 
 namespace PoolGameAPI
 {
@@ -16,8 +19,23 @@ namespace PoolGameAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddSingleton<TokenProvider>();
+            builder.Services.AddAuthorization();
+            builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(o =>
+                {
+                    o.RequireHttpsMetadata = false;
+                    o.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
 
-            builder
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]!)),
+                        ValidIssuer = builder.Configuration["Jwt:Issuers"],
+                        ValidAudience = builder.Configuration["Jwt:Audience"],
+                        ClockSkew = TimeSpan.MaxValue
+
+                    };
+
+                });
 
             var app = builder.Build();
             
@@ -35,6 +53,10 @@ namespace PoolGameAPI
 
 
             app.MapControllers();
+
+            app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.Run();
         }

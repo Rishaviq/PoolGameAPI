@@ -8,7 +8,7 @@ namespace PoolGameAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UsersController(TokenProvider tokenProvider, IConfiguration configuration) : Controller
+    public class UsersController(TokenProvider tokenProvider, IConfiguration configuration,IPasswordHasher passwordHasher) : Controller
     {
 
         [HttpPost]
@@ -17,8 +17,9 @@ namespace PoolGameAPI.Controllers
 
             try
             {
+                value.password = passwordHasher.Hash(value.password);
 
-              //  IConfiguration configuration;
+                //  IConfiguration configuration;
                 MySqlConnection connection = new MySqlConnection(configuration["SQL:connection"].ToString());
 
                 connection.Open();
@@ -26,6 +27,7 @@ namespace PoolGameAPI.Controllers
 
                 if (connection.State == System.Data.ConnectionState.Open)
                 {
+                    
                     string query = $"INSERT INTO user_accouts ( user_accouts_username,user_accouts_password) " +
                                    $"VALUES (@AccUsername, @AccPassword)";
 
