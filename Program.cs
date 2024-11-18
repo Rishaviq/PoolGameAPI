@@ -17,7 +17,7 @@ namespace PoolGameAPI
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGenWithAuth();
             builder.Services.AddSingleton<TokenProvider>();
             builder.Services.AddAuthorization();
             builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
@@ -29,9 +29,9 @@ namespace PoolGameAPI
                     {
 
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]!)),
-                        ValidIssuer = builder.Configuration["Jwt:Issuers"],
+                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
                         ValidAudience = builder.Configuration["Jwt:Audience"],
-                        ClockSkew = TimeSpan.MaxValue
+                        ClockSkew = TimeSpan.Zero
 
                     };
 
@@ -49,7 +49,7 @@ namespace PoolGameAPI
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+          //  app.UseAuthorization();
 
 
             app.MapControllers();

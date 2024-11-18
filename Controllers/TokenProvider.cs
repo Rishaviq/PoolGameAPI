@@ -39,5 +39,16 @@ namespace PoolGameAPI.Controllers
             string token = handler.CreateToken(tokenDesctiptor);
             return token;
         }
+
+     public   string getUsernameFromToken(string token) {
+            var handler = new JsonWebTokenHandler();
+            var jwtToken= handler.ReadJsonWebToken(token);
+
+            var usernameClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier || claim.Type == "sub");
+        
+        return usernameClaim.Value;
+        }
+
+
     }
 }

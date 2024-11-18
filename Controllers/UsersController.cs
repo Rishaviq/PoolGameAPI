@@ -4,10 +4,12 @@ using PoolGameAPI.modules;
 using System.Text.Json;
 using MySql.Data.MySqlClient;
 using Google.Protobuf.WellKnownTypes;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PoolGameAPI.Controllers
 {
     [ApiController]
+   
     [Route("[controller]")]
     public class UsersController(TokenProvider tokenProvider, IConfiguration configuration,IPasswordHasher passwordHasher) : Controller
     {
