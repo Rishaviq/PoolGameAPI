@@ -76,57 +76,39 @@ namespace PoolGameAPI.Controllers
         public string Get([FromQuery] Users credentials) {
             try
             {
-                string token = null;
-                string passwordHash=null;
+                string token = tokenProvider.Create(credentials);
 
 
-                MySqlConnection connection = new MySqlConnection(configuration["SQL:connection"].ToString());
-                connection.Open();
-
-                if (connection.State == System.Data.ConnectionState.Open)
+                using (var dBcontext = new PoolAppDbContext(configuration))
                 {
-
-                    string query = "SELECT user_accouts_password FROM user_accouts WHERE user_accouts_username =@Username";
                     
-                    MySqlCommand command = new MySqlCommand(query, connection);
-                    command.Parameters.AddWithValue("@Username", credentials.username);
-                    var temp=command.ExecuteScalar();
-                    if (temp != null)
+                    var user = dBcontext.UserAccouts
+                            
+                            .Where(b=>b.UserAccoutsUsername.Equals( credentials.username))
+                            .ToList();
+
+                    if (passwordHasher.Verify(credentials.password, user[0].UserAccoutsPassword) && user != null)
                     {
-                        passwordHash = command.ExecuteScalar().ToString();
 
-                        if (passwordHasher.Verify(credentials.password, passwordHash) && temp != null)
-                        {
-                            token = tokenProvider.Create(credentials);
-                            return token;
-                        }
-                        else { return "Invalid password or username"; }
-
-
+                       
+                        return token;
                     }
-                    return "Invalid username";
-                    
-                }
-                else
-                {
+                    else { return "wrong username/password"; }
 
-                    Console.WriteLine("Database connection failed.");
-                    return "error";
+
                 }
 
-
-
-
-               
 
             }
 
 
 
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
+                Console.WriteLine("get");
                 Console.WriteLine(ex.Message);
                 return null;
-            
+
             }
         } 
     }
