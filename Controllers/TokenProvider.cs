@@ -40,7 +40,8 @@ namespace PoolGameAPI.Controllers
             return token;
         }
 
-     public   string getUsernameFromToken(string token) {
+     public string getUsernameFromToken(string token) {
+            token=token.Substring("Bearer ".Length);
             var handler = new JsonWebTokenHandler();
             var jwtToken= handler.ReadJsonWebToken(token);
 

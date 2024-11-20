@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PoolGameAPI.modules;
 using System.Text.Json;
+using Microsoft.AspNetCore.Http;
+using System.IdentityModel.Tokens.Jwt;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -9,21 +12,18 @@ namespace PoolGameAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GameRecordsController(IConfiguration configuration) : ControllerBase
+    public class GameRecordsController(IConfiguration configuration, TokenProvider tokenProvider) : Controller
     {
-        // GET: api/<GameRecordsController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        
 
         // GET api/<GameRecordsController>/5
+        [Authorize]
         [HttpGet("{username}")]
         public IActionResult Get(string username)
         {
             try
             {
+             
                 using (var Db = new PoolAppDbContext(configuration))
                 {
 
@@ -50,9 +50,23 @@ namespace PoolGameAPI.Controllers
         }
 
         // POST api/<GameRecordsController>
+        [Authorize]
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] JsonRecord gamerecord)
         {
+            try
+            {
+                using (var Db = new PoolAppDbContext(configuration))
+                {
+                    gamerecord.player = tokenProvider.getUsernameFromToken(Request.Headers["Authorization"].ToString());
+                    GameRecord newRecord = new GameRecord();
+                    newRecord = gamerecord.createRecord(newRecord, configuration);
+                    Db.GameRecords.Add(newRecord);
+                    Db.SaveChanges();
+                }
+            }
+            catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+            return Ok();
         }
 
 
