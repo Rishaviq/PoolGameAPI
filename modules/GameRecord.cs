@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace PoolGameAPI.modules;
 
@@ -22,8 +23,8 @@ public partial class GameRecord
     public int? GameRecordsFouls { get; set; }
 
     public int? GameRecordsBestStreak { get; set; }
-
+    [JsonIgnore]
     public virtual UserAccout GameRecordsPlayerNavigation { get; set; } = null!;
-
+    [JsonIgnore]
     public virtual ResultType GameRecordsResultNavigation { get; set; } = null!;
 }
