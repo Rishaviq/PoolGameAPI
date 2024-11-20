@@ -8,30 +8,31 @@ namespace PoolGameAPI.modules
     {
         [JsonIgnore]
         private IConfiguration _configuration;
-        [JsonInclude]
+        
         [JsonPropertyName("gameId")]
         public string gameId { get; set; } = null!;
-        [JsonIgnore]
+       
         
         public string player { get; set; }
-        [JsonInclude]
+        
         [JsonPropertyName("result")]
         public string result { get; set; }
-        [JsonInclude]
+        
         [JsonPropertyName("shotsMade")]
         public int? shotsMade { get; set; }
-        [JsonInclude]
+        
         [JsonPropertyName("shotAttempted")]
         public int? shotAttempted { get; set; }
-        [JsonInclude]
+      
         [JsonPropertyName("handball")]
         public int? handball { get; set; }
-        [JsonInclude]
+       
         [JsonPropertyName("fouls")]
         public int? fouls { get; set; }
 
+        public int? BestStreak { get; set; }
 
-      public JsonRecord(GameRecord gR) {
+        public JsonRecord(GameRecord gR) {
             
             
                 gameId = gR.GameRecordsGameId;
@@ -41,6 +42,7 @@ namespace PoolGameAPI.modules
                 shotAttempted = gR.GameRecordsShotAttempted;
                 handball = gR.GameRecordsHandball;
                 fouls = gR.GameRecordsFouls;
+            BestStreak = gR.GameRecordsBestStreak;
             
         }
 
@@ -51,6 +53,7 @@ namespace PoolGameAPI.modules
             gR.GameRecordsShotAttempted = shotAttempted;
             gR.GameRecordsHandball = handball;
             gR.GameRecordsFouls = fouls;
+            gR.GameRecordsBestStreak=BestStreak;
             using (var Db = new PoolAppDbContext(configuration))
             {
 
@@ -85,6 +88,7 @@ namespace PoolGameAPI.modules
             shotAttempted = null;
             handball = null;
             fouls = null;
+            BestStreak = null;
         }
 
 
