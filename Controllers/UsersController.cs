@@ -82,12 +82,12 @@ namespace PoolGameAPI.Controllers
                 using (var dBcontext = new PoolAppDbContext(configuration))
                 {
                     
-                    var user = dBcontext.UserAccouts
+                    var user = dBcontext.UserAccounts
                             
-                            .Where(b=>b.UserAccoutsUsername.Equals( credentials.username))
+                            .Where(b=>b.UserAccountsUsername.Equals( credentials.username))
                             .ToList();
 
-                    if (passwordHasher.Verify(credentials.password, user[0].UserAccoutsPassword) && user != null)
+                    if (passwordHasher.Verify(credentials.password, user[0].UserAccountsPassword) && user != null)
                     {
 
                        

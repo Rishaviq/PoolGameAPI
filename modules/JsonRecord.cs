@@ -36,7 +36,7 @@ namespace PoolGameAPI.modules
             
             
                 gameId = gR.GameRecordsGameId;
-                player = gR.GameRecordsPlayerNavigation.UserAccoutsUsername;
+                player = gR.GameRecordsPlayerNavigation.UserAccountsUsername;
                 result = gR.GameRecordsResultNavigation.ResultType1;
                 shotsMade = gR.GameRecordsShotsMade;
                 shotAttempted = gR.GameRecordsShotAttempted;
@@ -63,11 +63,11 @@ namespace PoolGameAPI.modules
                         .Single();
                 gR.GameRecordsResult = result.IdresultTypes;
 
-                var player = Db.UserAccouts
+                var player = Db.UserAccounts
 
-                       .Where(gr => gr.UserAccoutsUsername.Equals(this.player))
+                       .Where(gr => gr.UserAccountsUsername.Equals(this.player))
                        .Single();
-                gR.GameRecordsPlayer = player.IduserAccouts;
+                gR.GameRecordsPlayer = player.IduserAccounts;
 
             }
 

@@ -24,7 +24,7 @@ public partial class GameRecord
 
     public int? GameRecordsBestStreak { get; set; }
     
-    public virtual UserAccout GameRecordsPlayerNavigation { get; set; } = null!;
+    public virtual UserAccount GameRecordsPlayerNavigation { get; set; } = null!;
     
     public virtual ResultType GameRecordsResultNavigation { get; set; } = null!;
 }

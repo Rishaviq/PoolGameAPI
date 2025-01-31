@@ -4,13 +4,13 @@ using Newtonsoft.Json;
 
 namespace PoolGameAPI.modules;
 
-public partial class UserAccout
+public partial class UserAccount
 {
-    public int IduserAccouts { get; set; }
+    public int IduserAccounts { get; set; }
 
-    public string UserAccoutsUsername { get; set; } = null!;
+    public string UserAccountsUsername { get; set; } = null!;
 
-    public string UserAccoutsPassword { get; set; } = null!;
+    public string UserAccountsPassword { get; set; } = null!;
     [JsonIgnore]
     public virtual ICollection<GameRecord> GameRecords { get; set; } = new List<GameRecord>();
     [JsonIgnore]

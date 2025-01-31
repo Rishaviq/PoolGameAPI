@@ -26,7 +26,7 @@ public partial class PoolAppDbContext : DbContext
 
     public virtual DbSet<ResultType> ResultTypes { get; set; }
 
-    public virtual DbSet<UserAccout> UserAccouts { get; set; }
+    public virtual DbSet<UserAccount> UserAccounts { get; set; }
 
     public virtual DbSet<UserProfile> UserProfiles { get; set; }
 
@@ -95,19 +95,19 @@ public partial class PoolAppDbContext : DbContext
                 .HasColumnName("result_type");
         });
 
-        modelBuilder.Entity<UserAccout>(entity =>
+        modelBuilder.Entity<UserAccount>(entity =>
         {
-            entity.HasKey(e => e.IduserAccouts).HasName("PRIMARY");
+            entity.HasKey(e => e.IduserAccounts).HasName("PRIMARY");
 
             entity.ToTable("user_accouts");
 
-            entity.HasIndex(e => e.UserAccoutsUsername, "user_accouts_username_UNIQUE").IsUnique();
+            entity.HasIndex(e => e.UserAccountsUsername, "user_accouts_username_UNIQUE").IsUnique();
 
-            entity.Property(e => e.IduserAccouts).HasColumnName("iduser_accouts");
-            entity.Property(e => e.UserAccoutsPassword)
+            entity.Property(e => e.IduserAccounts).HasColumnName("iduser_accouts");
+            entity.Property(e => e.UserAccountsPassword)
                 .HasMaxLength(100)
                 .HasColumnName("user_accouts_password");
-            entity.Property(e => e.UserAccoutsUsername)
+            entity.Property(e => e.UserAccountsUsername)
                 .HasMaxLength(45)
                 .HasColumnName("user_accouts_username");
         });

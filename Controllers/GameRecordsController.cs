@@ -30,7 +30,7 @@ namespace PoolGameAPI.Controllers
                     var game = Db.GameRecords
                         .Include(gr => gr.GameRecordsPlayerNavigation)
                         .Include(gr => gr.GameRecordsResultNavigation)
-                            .Where(gr => gr.GameRecordsPlayerNavigation.UserAccoutsUsername == username)
+                            .Where(gr => gr.GameRecordsPlayerNavigation.UserAccountsUsername == username)
                             .ToList();
 
 

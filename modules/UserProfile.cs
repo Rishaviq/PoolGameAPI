@@ -11,5 +11,5 @@ public partial class UserProfile
 
     public int? UserProfileIduser { get; set; }
 
-    public virtual UserAccout? UserProfileIduserNavigation { get; set; }
+    public virtual UserAccount? UserProfileIduserNavigation { get; set; }
 }
